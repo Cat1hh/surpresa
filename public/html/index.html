@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GUYAN 💜❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap');
+
+        :root {
+            --bg-1: #fff9fd;
+            --bg-2: #ffe8f2;
+            --bg-3: #ffd7ea;
+            --ink: #58375d;
+            --ink-soft: #826483;
+            --pink: #ff86b5;
+            --pink-strong: #ff4f8f;
+            --lavender: #bf9cff;
+            --cream: rgba(255, 255, 255, 0.76);
+            --card: rgba(255, 255, 255, 0.72);
+            --shadow: 0 22px 60px rgba(148, 85, 122, 0.22);
+            --stroke: rgba(255, 255, 255, 0.88);
+        }
+
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: 'Quicksand', 'Trebuchet MS', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            color: var(--ink);
+            overflow: hidden; /* Impede barras de rolagem durante a transição */
+            background: radial-gradient(circle at top, #fffdfd 0%, var(--bg-1) 40%, var(--bg-2) 100%); /* Cor de fundo caso a imagem demore a carregar */
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(rgba(255, 255, 255, 0.75) 1px, transparent 1px),
+                radial-gradient(rgba(255, 170, 200, 0.18) 2px, transparent 2px);
+            background-size: 24px 24px, 72px 72px;
+            background-position: 0 0, 12px 12px;
+            opacity: 0.52;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: auto -10vw -18vh auto;
+            width: 42vw;
+            height: 42vw;
+            background: radial-gradient(circle, rgba(255, 143, 190, 0.18) 0%, rgba(255, 143, 190, 0.08) 35%, transparent 70%);
+            pointer-events: none;
+            filter: blur(6px);
+        }
+
+        /* Configuração base para todas as telas */
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s ease-in-out, visibility 1s;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            isolation: isolate;
+            overflow: hidden;
+        }
+
+        .screen::before,
+        .screen::after {
+            content: '';
+            position: absolute;
+            border-radius: 999px;
+            filter: blur(10px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.35;
+        }
+
+        .screen::before {
+            width: 220px;
+            height: 220px;
+            background: rgba(255, 255, 255, 0.35);
+            top: 10%;
+            left: 8%;
+        }
+
+        .screen::after {
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 182, 213, 0.24);
+            right: -40px;
+            bottom: -40px;
+        }
+
+        .screen .sparkle {
+            position: absolute;
+            z-index: 1;
+            color: rgba(255, 255, 255, 0.78);
+            text-shadow: 0 0 18px rgba(255, 160, 198, 0.6);
+            animation: twinkle 4.5s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .screen .sparkle.s1 { top: 10%; left: 12%; font-size: 1.2rem; animation-delay: 0.2s; }
+        .screen .sparkle.s2 { top: 18%; right: 13%; font-size: 1.35rem; animation-delay: 1s; }
+        .screen .sparkle.s3 { bottom: 16%; left: 15%; font-size: 1rem; animation-delay: 1.5s; }
+        .screen .sparkle.s4 { bottom: 20%; right: 12%; font-size: 1.4rem; animation-delay: 0.7s; }
+
+        /* Tela ativa */
+        .screen.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 10;
+        }
+
+        /* Camada escura sobre as fotos para dar contraste ao texto */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Degradê suave para preservar as fotos sem pesar o clima */
+            background: linear-gradient(to bottom, rgba(255, 247, 252, 0.78) 0%, rgba(255, 232, 242, 0.28) 45%, rgba(255, 240, 248, 0.82) 100%);
+            z-index: 1;
+        }
+
+        /* Todo conteúdo textual e botões precisam estar acima do overlay */
+        .content {
+            position: relative;
+            z-index: 2;
+            max-width: 860px;
+            padding: 32px 32px 30px;
+            border-radius: 36px;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 244, 250, 0.72));
+            border: 1px solid var(--stroke);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            transform: translateY(0);
+            animation: cardIn 0.9s cubic-bezier(0.2, 1, 0.22, 1);
+        }
+
+        .content::before {
+            content: '✿';
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 44px;
+            height: 44px;
+            display: grid;
+            place-items: center;
+            border-radius: 999px;
+            background: linear-gradient(135deg, rgba(255, 250, 253, 0.95), rgba(255, 224, 235, 0.95));
+            color: var(--pink-strong);
+            box-shadow: 0 10px 24px rgba(255, 122, 168, 0.22);
+        }
+
+        .content::after {
+            content: '';
+            position: absolute;
+            inset: 12px;
+            border-radius: 28px;
+            border: 1px dashed rgba(255, 145, 184, 0.24);
+            pointer-events: none;
+        }
+
+        /* --- Estilização Específica de cada Tela --- */
+
+        /* Tela 0: Início (Sem foto, apenas fundo gradiente) */
+        #tela-0 {
+            background:
+                radial-gradient(circle at top, #fff8fc 0%, #ffe6f1 35%, #ffd8ea 70%, #ffc8e0 100%);
+        }
+
+        /* Tela 1: Foto Mãos Dadas */
+        #tela-1 {
+            /* IMPORTANTE: Coloque o arquivo 'maos.jpg' na mesma pasta */
+            background-image: url('/public/image/maos.jpg');
+        }
+
+        /* Tela 2: Foto Shopping (Cabelo e Cheiro) */
+        #tela-2 {
+            /* IMPORTANTE: Coloque o arquivo 'shopping.jpg' na mesma pasta */
+            background-image: url('/public/image/shopping.jpg');
+        }
+
+        /* Tela Final: Pedido (Pode usar a do shopping ou voltar pro gradiente) */
+        #tela-pedido {
+            background:
+                radial-gradient(circle at top, rgba(255,255,255,0.82) 0%, rgba(255,255,255,0) 36%),
+                linear-gradient(135deg, #fff3f8, #ffd9ea, #ffe9f4, #f4e8ff);
+            background-size: cover, 400% 400%;
+            animation: none, gradientBG 12s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Tipografia e Botões --- */
+
+        h1.nocoes {
+            font-size: clamp(2.4rem, 4vw, 4rem);
+            margin-bottom: 18px;
+            color: var(--ink);
+            letter-spacing: 0.02em;
+            text-shadow: 0 2px 0 rgba(255, 255, 255, 0.85);
+            font-family: 'Fredoka', 'Quicksand', sans-serif;
+        }
+
+        h1.guyan {
+            font-size: clamp(3.2rem, 7vw, 5rem);
+            letter-spacing: 0.12em;
+            text-indent: 0.12em;
+            background: linear-gradient(45deg, #ff6fa0, #b98cff, #ff8fb6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 18px;
+            filter: drop-shadow(0 12px 18px rgba(255, 111, 160, 0.2));
+            font-family: 'Fredoka', 'Quicksand', sans-serif;
+            text-transform: uppercase;
+        }
+
+        p {
+            font-size: clamp(1.08rem, 2vw, 1.45rem);
+            line-height: 1.6;
+            margin-bottom: 22px;
+            color: var(--ink);
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 10px;
+            padding: 0.55rem 1rem;
+            border-radius: 999px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 227, 240, 0.8));
+            border: 1px solid rgba(255, 255, 255, 0.85);
+            color: var(--ink-soft);
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            font-size: 0.78rem;
+        }
+
+        .eyebrow::before {
+            content: '✦';
+            color: var(--pink-strong);
+            font-size: 0.9rem;
+        }
+
+        strong {
+            color: var(--pink-strong); /* Destaca palavras chave em rosa */
+        }
+
+        .proposal {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 28px;
+            font-weight: bold;
+            color: var(--ink);
+            text-shadow: 0 10px 18px rgba(255, 122, 168, 0.12);
+        }
+
+        .memory-line {
+            width: min(160px, 42vw);
+            height: 6px;
+            margin: 0 auto 22px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(255, 134, 181, 0), rgba(255, 134, 181, 0.75), rgba(191, 156, 255, 0.75), rgba(255, 134, 181, 0));
+            box-shadow: 0 10px 18px rgba(255, 134, 181, 0.18);
+        }
+
+        .caption {
+            max-width: 42rem;
+            margin: 0 auto 22px;
+            color: var(--ink-soft);
+            font-size: 1rem;
+        }
+
+        button {
+            padding: 14px 34px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+            box-shadow: 0 12px 26px rgba(163, 108, 139, 0.24);
+            letter-spacing: 0.02em;
+            font-family: 'Fredoka', 'Quicksand', sans-serif;
+        }
+
+        button:hover {
+            transform: translateY(-2px) scale(1.02);
+            filter: brightness(1.03);
+        }
+
+        button:active {
+            transform: translateY(0) scale(0.99);
+        }
+
+        /* Botão Iniciar pulsante */
+        .btn-start {
+            background: linear-gradient(135deg, #ff8ab2, #ff5f95 55%, #ff87c2);
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Botão Continuar Roxo */
+        .btn-next {
+            background: linear-gradient(135deg, #ff9ac0, #c59cff 55%, #ffb7a1);
+            color: white;
+        }
+
+        /* Área do pedido final */
+        .buttons-proposal {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            flex-wrap: wrap;
+            width: 100%;
+            min-height: 70px; /* Espaço para o botão fugir */
+            align-items: center;
+        }
+
+        #btn-sim {
+            background: linear-gradient(135deg, #ff86b1, #ff5f95 55%, #ff9cc5);
+            color: white;
+            min-width: 140px;
+        }
+
+        #btn-nao {
+            background: linear-gradient(135deg, #ffffff, #fff2f7);
+            color: var(--ink);
+            position: relative; /* Necessário para a função fugir */
+            min-width: 140px;
+        }
+
+        #btn-nao:hover {
+            color: var(--ink);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 122, 168, 0.5); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 18px rgba(255, 122, 168, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 122, 168, 0); }
+        }
+
+        /* Corações de fundo na tela final */
+        .heart {
+            position: absolute;
+            font-size: 22px;
+            animation: float 5s linear infinite;
+            opacity: 0.3;
+            z-index: 1;
+            filter: drop-shadow(0 6px 10px rgba(255, 255, 255, 0.35));
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 18px;
+            border-radius: 999px;
+            opacity: 0.75;
+            z-index: 1;
+            animation: confettiFall 6s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { transform: scale(0.9) rotate(0deg); opacity: 0.55; }
+            50% { transform: scale(1.2) rotate(12deg); opacity: 1; }
+        }
+
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: translateY(24px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                max-width: min(92vw, 560px);
+                padding: 24px 18px 22px;
+                border-radius: 28px;
+            }
+
+            p {
+                line-height: 1.55;
+                margin-bottom: 18px;
+            }
+
+            button {
+                width: 100%;
+                max-width: 320px;
+            }
+
+            .buttons-proposal {
+                gap: 12px;
+            }
+
+            .caption {
+                font-size: 0.98rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Música de Fundo (Coloque o arquivo 'musica.mp3' na pasta) -->
+    <audio id="musica-fundo" loop>
+        <source src="musica.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- TELA 0: Início -->
+    <div id="tela-0" class="screen active">
+        <span class="sparkle s1">✦</span>
+        <span class="sparkle s2">✧</span>
+        <span class="sparkle s3">✦</span>
+        <span class="sparkle s4">✧</span>
+        <div class="content">
+            <div class="eyebrow">uma surpresa fofa</div>
+            <h1 class="nocoes">Surpresa...</h1>
+            <div class="memory-line"></div>
+            <p class="caption">Abre com calma. Eu deixei cada pedacinho com cara de lembrança boa, abraço quente e coração bobo.</p>
+            <button class="btn-start" onclick="iniciar()">NÃO CLIQUE</button>
+        </div>
+    </div>
+
+    <!-- TELA 1: Foto Mãos Dadas -->
+    <div id="tela-1" class="screen">
+        <span class="sparkle s1">✧</span>
+        <span class="sparkle s2">✦</span>
+        <div class="overlay"></div> <!-- Camada escura -->
+        <div class="content">
+            <div class="eyebrow">primeiro carinho</div>
+            <p>Eu nunca vou esquecer da <strong>primeira vez que estivemos com as mãos dadas</strong>...</p>
+            <p>Aquele momento me fez sentir algo único e especial.</p>
+            <button class="btn-next" onclick="proximaTela(1, 2)">Continuar ❤️</button>
+        </div>
+    </div>
+
+    <!-- TELA 2: Foto Shopping (Cabelo e Cheiro) -->
+    <div id="tela-2" class="screen">
+        <span class="sparkle s1">✦</span>
+        <span class="sparkle s2">✧</span>
+        <div class="overlay"></div>
+        <div class="content">
+            <div class="eyebrow">coisas que eu amo em você</div>
+            <p>Eu sou completamente fascinado pelo <strong>seu cabelo</strong>. É um dos meus maiores vícios ficar te olhando e fazendo carinho.</p>
+            <p>E o <strong>seu cheiro</strong>... Nossa, é o melhor do mundo. Me traz paz e me faz querer ficar colado em você.</p>
+            <button class="btn-next" onclick="proximaTela(2, 'pedido')">Continuar 💜</button>
+        </div>
+    </div>
+
+    <!-- TELA FINAL: O Pedido -->
+    <div id="tela-pedido" class="screen">
+        <!-- Corações aparecem aqui via JS -->
+        <span class="sparkle s1">✧</span>
+        <span class="sparkle s2">✦</span>
+        <span class="sparkle s3">✧</span>
+        <span class="sparkle s4">✦</span>
+        <div class="content">
+            <div class="eyebrow">o pedido mais sincero</div>
+            <h1 class="guyan">GUYAN</h1>
+            <div class="memory-line"></div>
+            <div class="proposal">Quer namorar comigo?</div>
+            <p class="caption">Prometo cuidado, risada boba, carinho infinito e muito amor no dia a dia.</p>
+            <div class="buttons-proposal">
+                <button id="btn-sim" onclick="aceitou()">SIM!</button>
+                <button id="btn-nao" onmouseover="fugir()" onclick="fugir()">NÃO</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função para iniciar música e ir para a primeira foto
+        function iniciar() {
+            let musica = document.getElementById("musica-fundo");
+            musica.volume = 0.5;
+            musica.play().catch(e => console.log("Audio block:", e));
+            proximaTela(0, 1);
+        }
+
+        // Função genérica para trocar de tela
+        function proximaTela(atual, proxima) {
+            // Esconde a tela atual
+            document.getElementById(`tela-${atual}`).classList.remove('active');
+            // Mostra a próxima tela após um pequeno delay para o efeito de fade
+            setTimeout(() => {
+                document.getElementById(`tela-${proxima}`).classList.add('active');
+            }, 100); 
+        }
+
+        // Botão Não foge
+        function fugir() {
+            const btnNao = document.getElementById('btn-nao');
+            // Define limites para o botão não sair totalmente da tela visível
+            const pad = 20;
+            const maxX = window.innerWidth - btnNao.offsetWidth - pad;
+            const maxY = window.innerHeight - btnNao.offsetHeight - pad;
+            
+            const randomX = Math.floor(Math.random() * (maxX - pad) + pad);
+            const randomY = Math.floor(Math.random() * (maxY - pad) + pad);
+            
+            btnNao.style.position = "fixed"; // Muda para fixed para fugir pela tela toda
+            btnNao.style.left = randomX + "px";
+            btnNao.style.top = randomY + "px";
+        }
+
+        // Resposta SIM
+        function aceitou() {
+            createHearts(); // Começa a chover corações
+            const conteudo = document.querySelector('#tela-pedido .content');
+            conteudo.innerHTML = `
+                <div style="font-size: 1rem; color: #9a6f96; margin-bottom: 10px; letter-spacing: 0.18em; text-transform: uppercase;">resposta perfeita</div>
+                <h1 class="guyan" style="font-size: clamp(3.4rem, 9vw, 5.4rem);">SIM! 🎉</h1>
+                <p style="font-size: clamp(1.4rem, 3vw, 2rem); font-weight: bold;">Eu te amo! ❤️💜</p>
+                <p>Agora é oficial: GUYAN! ✨</p>
+            `;
+        }
+
+        // Criação dos corações flutuantes
+        function createHearts() {
+            const container = document.getElementById('tela-pedido');
+            const colors = ["❤️", "💜"];
+            for (let i = 0; i < 25; i++) {
+                let heart = document.createElement("div");
+                heart.innerHTML = colors[Math.floor(Math.random() * colors.length)];
+                heart.classList.add("heart");
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.animationDuration = (Math.random() * 3 + 2) + "s"; // Mais rápido na vitória
+                heart.style.animationDelay = Math.random() * 1 + "s";
+                container.appendChild(heart);
+            }
+
+            for (let i = 0; i < 14; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = (-10 - Math.random() * 20) + 'vh';
+                confetti.style.background = ["#ff8ab2", "#b98cff", "#ffd37d", "#ffffff"][Math.floor(Math.random() * 4)];
+                confetti.style.animationDuration = (Math.random() * 2.5 + 3.5) + 's';
+                confetti.style.animationDelay = Math.random() * 1 + 's';
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                container.appendChild(confetti);
+            }
+        }
+    </script>
+</body>
+</html>
